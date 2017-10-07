@@ -5,8 +5,12 @@ const http = require ('http') // low-level native Node library
 const bodyParser = require('body-parser')
 const morgan = require ('morgan')
 const router = require('./router')
+const mongoose = require('mongoose')
 
 const app = express()
+
+// DB setup
+mongoose.connect('mongodb://localhost:auth/auth') // last param 'authmodemon' is name of DB
 
 // App setup
 app.use(morgan('combined'))
