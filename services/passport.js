@@ -8,15 +8,22 @@ const LocalStrategy = require('passport-local')
 // Create local strategy
 const localOptions = { usernameField: 'email' } // point to email property, since we use email instead of username
 const localLogin = new LocalStrategy(localOptions, function (email, password, done) {
- // Verify this email and password, then call done with user
- // If this is correct email and password
- // If not, call done with false
  User.findOne({ email: email }, function (err, user) {
    if (err) { return done(err) }
+   // If this is correct email and password
    if (!user) { return done(null, false) }
+
+   // compare plain password input with stored hashed password
+   user.comparePassword(password, function(err, isMatch) {
+     if (err) { return done(err) }
+     // If not a match, call done with false
+     if (!isMatch) { return done(null, false) }
+
+     // Verify email and password, then call done with user
+     return done(null, user)
  })
 
- // compare plain password input with stored hashed password
+ })
 })
 
 // Set up options for JWT Strategy
