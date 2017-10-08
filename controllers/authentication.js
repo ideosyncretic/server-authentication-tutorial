@@ -10,6 +10,7 @@ function tokenForUser(user) {
 exports.signin = function(req, res, next) {
   // User has already been auth'd
   // We just need to give them a token
+  res.send({ token: tokenForUser(req.user)}) // passport returns user on req object
 }
 
 exports.signup = function (req, res, next) {
